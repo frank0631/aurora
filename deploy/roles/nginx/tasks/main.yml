@@ -1,5 +1,10 @@
 # main.yml - Nginx installation
 ---
+- name: Install libselinux-python
+  yum:
+    name: libselinux-python
+    state: present
+
 - name: Install Nginx
   yum:
     name: "{{ item }}"
