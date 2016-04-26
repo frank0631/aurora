@@ -1,0 +1,24 @@
+---
+- name: Get Rhobot
+  copy:
+    src: "{{ artifacts_dir }}/{{ rhobot_bin }}"
+    dest: /tmp/
+    mode: a+x
+
+- name: Ensure umask is correct
+  sudo: no
+  lineinfile:
+    dest: ~/.bashrc
+    line: umask 0022
+    regexp: ^(.*)umask(.*)$
+    state: present
+
+
+- name: Install Rhobot
+  shell: "mkdir -p {{ rhobot_install_dir }}/{{ rhobot_bin }} &&
+    cp /tmp/{{ rhobot_bin }} {{ rhobot_install_dir }}/{{ rhobot_bin }}"
+  args:
+    creates: "{{ rhobot_install_dir }}/{{ rhobot_bin }}"
+
+- name: Symlink Rhobot
+  shell: "ln -s {{ rhobot_install_dir }} /usr/bin/rhobot "
