@@ -88,6 +88,9 @@ db_server ansible_ssh_host=10.0.1.29
 [db_terminal]
 db_terminal ansible_ssh_host=10.0.1.30
 
+[db_project_dev]
+db_project_dev ansible_ssh_host=10.0.1.40
+
 [datawarehouse]
 db_server
 db_terminal

@@ -1,0 +1,18 @@
+# deploy_db_project_dev.yml
+---
+- hosts: db_project_dev
+  sudo: yes
+  roles:
+    - postgresql-client
+    - sqitch
+    - rhobot
+
+  tasks:
+    - name: Install pip
+      apt: name=python-pip update_cache=yes state=present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - name: Install git
+      apt: name=git update_cache=yes state=present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - name: Install cookiecutter
+      pip: name=cookiecutter
