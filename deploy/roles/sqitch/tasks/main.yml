@@ -8,6 +8,7 @@
     - perl-CPAN
     #- perl-DBD-Pg
     - "@Development Tools"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Ensure umask is correct
   sudo: no
