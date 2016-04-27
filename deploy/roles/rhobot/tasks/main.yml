@@ -15,10 +15,13 @@
 
 
 - name: Install Rhobot
-  shell: "mkdir -p {{ rhobot_install_dir }}/{{ rhobot_bin }} &&
+  shell: "mkdir -p {{ rhobot_install_dir }} &&
     cp /tmp/{{ rhobot_bin }} {{ rhobot_install_dir }}/{{ rhobot_bin }}"
   args:
     creates: "{{ rhobot_install_dir }}/{{ rhobot_bin }}"
 
 - name: Symlink Rhobot
-  shell: "ln -s {{ rhobot_install_dir }} /usr/bin/rhobot "
+  shell: "ln -s {{ rhobot_install_dir }}/{{ rhobot_bin }} /usr/bin/rhobot "
+
+- name: Make Rhobot Accessible
+  shell: "chmod 777 /usr/bin/rhobot "
