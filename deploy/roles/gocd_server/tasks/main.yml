@@ -6,6 +6,13 @@
 #    dest: /tmp/
 #    checksum: "sha1:{{ gocd_server_checksum }}"
 #    validate_certs: False
+- name: Install httpd-tools
+  yum:
+    name: "{{ item }}"
+    state: present
+    disable_gpg_check: yes
+  with_items:
+    - httpd-tools
 
 - name: Download GoCD Server RPM
   shell: "curl -o {{ gocd_server_package_path }}/{{ gocd_server_package_name }} {{ gocd_server_package_url }}"
@@ -54,14 +61,10 @@
     - restart go-server
 
 - name: Create password file
-  copy:
-    dest: /var/go/.password
-    content: "admin:{{ gocd_admin_password }}"
-    owner: go
-    group: go
-    mode: 0600
-  notify:
-    -  restart go-server
+  shell: "htpasswd -bcs /var/go/.password admin {{ gocd_admin_password }}"
+
+- name: Change password file permissions
+  shell: "chmod 666 /var/go/.password"
 
 - name: Open GoCD Server port
   command: "iptables -I {{ iptables_chain }} 3 -m state --state NEW -p tcp --dport {{ gocd_server_port }} -j ACCEPT"

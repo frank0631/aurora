@@ -6,4 +6,4 @@ gocd_server_checksum: "9308d358713d2cadc7130b02ee4cc7f53e3844fe"
 gocd_server_work_dir: /var/lib/go-server
 gocd_server_port: 8153
 gocd_server_ssl_port: 8154
-gocd_admin_password: W6ph5Mm5Pz8GgiULbPgzG37mj9g= # "password"
+gocd_admin_password: password
