@@ -16,6 +16,8 @@
     - emacs
     - pycharm
     - nginx
+    - nodejs
+    - redis
     #- julia
 
 # Install development packages
@@ -31,7 +33,6 @@
         - "@development"
         - gcc-gfortran
         - python-devel
-        - nodejs
         - screen
 
     - name: Install custom RPMs

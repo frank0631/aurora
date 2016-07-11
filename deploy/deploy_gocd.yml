@@ -11,6 +11,8 @@
 - hosts: ci_agent
   become: yes
   become_method: sudo
+  serial: 1
+  max_fail_percentage: 10
   roles:
     - common
     - {role: puppet_disable, when: "disable_puppet"}
@@ -22,6 +24,7 @@
     - odbc
     - ruby
     - sqitch
+    - nodejs
     #- julia
 
 - hosts: ci_agent
@@ -39,7 +42,6 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - nodejs
         - "@development"
         - screen
         - p7zip
@@ -65,7 +67,7 @@
         name: "{{ item }}"
         state: present
         disable_gpg_check: yes
-      with_items: db_automation_custom_packages
+      with_items: "{{ db_automation_custom_packages }}"
       when: db_automation_custom_packages is defined
 
 - hosts: ci_terminal
@@ -89,6 +91,7 @@
     - r-studio-desktop
     - clouseau
     - pentaho
+    - sublime
 #   - julia
 
   tasks:
@@ -122,18 +125,18 @@
         name: "{{ item }}"
         state: present
         disable_gpg_check: yes
-      with_items: python_dep_packages
+      with_items: "{{ python_dep_packages }}"
 
     - name: Install Python packages for 27
       pip:
         name: "{{ item }}"
         state: present
         executable: /usr/local/bin/pip2.7
-      with_items: python_packages
+      with_items: "{{ python_packages }}"
 
     - name: Install Python packages for 34
       pip:
         name: "{{ item }}"
         state: present
         executable: /usr/local/bin/pip3.4
-      with_items: python3_packages
+      with_items: "{{ python3_packages }}"
