@@ -23,10 +23,10 @@
 
 - name: Add custom filters
   copy:
-    src: "{{ item }}"
-    dest: "/etc/logstash/conf.d/{{ item }}"
+    dest: "/etc/logstash/conf.d/{{ item.name }}"
+    content: "{{ item.content }}"
     mode: 0644
-  with_items: logstash_filters
+  with_items: "{{ logstash_filters }}"
 
 - name: Ensure permissions are correct
   shell: "chmod 644 /etc/logstash/conf.d/*"

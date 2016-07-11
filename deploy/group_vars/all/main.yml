@@ -12,6 +12,8 @@
 # you use.
 default_file_server: 10.0.1.4
 
+default_admin_terminal: admin_terminal
+
 # Define all GlusterFS "bricks" you want here.  Folders will be created on the
 # file server based on these settings, and GlusterFS volumes will be created and
 # mounted on client servers.
@@ -72,6 +74,10 @@ git_environment: master
 
 # Puppet disabling on?
 disable_puppet: False
+
+# Location on the local machine where artifacts can be found
+# (by default, the directory ansible is run from)
+artifacts_dir: .
 
 #==============#
 ### IPTABLES ###
@@ -153,6 +159,8 @@ krb_ask_pass: "On"
 # LDAP Server
 ldap_subdomain: ldap
 ldap_server: kdc.test.dev
+ldap_user_scope: "cn=Users"
+ldap_group_scope: "cn=Groups"
 
 # LDAP Service Account
 ldap_service_account: admin
@@ -169,10 +177,6 @@ install_odbc: True
 #======================#
 ### PACKAGE SETTINGS ###
 #======================#
-postgres_packages:
-  - postgresql
-  - postgresql-devel
-
 r_shiny_server_package: http://download3.rstudio.org/centos-5.9/x86_64/shiny-server-1.3.0.403-rh5-x86_64.rpm
 
 python_dep_packages:
@@ -180,9 +184,11 @@ python_dep_packages:
 
 python_packages:
   - requests
+  - cookiecutter
 
 python3_packages:
   - requests
+  - cookiecutter
 
 #============================#
 ### ELASTICSEARCH SETTINGS ###
@@ -192,7 +198,6 @@ install_logstash: True
 es_endpoint: https://es.test.dev
 es_service_account: admin
 es_service_account_password: password
-es_message_auth: True
 es_user: elasticsearch
 
 #===================#
@@ -202,3 +207,23 @@ es_user: elasticsearch
 # Variables used for running the test suite
 gocd_service_username: admin
 gocd_service_password: password
+
+#=========================#
+### PostgreSQL Settings ###
+#=========================#
+
+# Superuser
+pp_superaccount: postgres
+pp_superpassword: password
+
+# PPAS Port
+pp_serverport: 5432
+
+# Default service account
+pp_dba_username: vagrant
+pp_dba_password: vagrant
+
+pp_custom_test_scripts:
+  -
+    script: "SELECT 1;"
+    assertion: "test_output['results'][0]['query_result'] == [[1]]"
